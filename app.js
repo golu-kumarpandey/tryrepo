@@ -64,6 +64,15 @@ app.post("/movies/", async (request, response) => {
   response.send("Movie Successfully Added");
 });
 
+const newMovieResult = (e) => {
+  return {
+    movieId: e.movie_id,
+    directorId: e.director_id,
+    movieName: e.movie_name,
+    leadActor: e.lead_actor,
+  };
+};
+
 // API 3: Get a movie by ID
 app.get("/movies/:movieId/", async (request, response) => {
   const { movieId } = request.params;
@@ -73,7 +82,9 @@ app.get("/movies/:movieId/", async (request, response) => {
     WHERE movie_id = ?;
   `;
   const movieResult = await db.get(getMovieQueries, [movieId]);
-  response.send(movieResult);
+
+  response.send(newMovieResult(movieResult));
+
   console.log(movieId);
   console.log(movieResult);
 });
